@@ -64,10 +64,7 @@ jobs:
           profile: pixel_6
           script: |
             gradle --no-daemon connectedDebugAndroidTest
-            adb shell am start -n in.akhilesh.ember/.MainActivity
-            sleep 3
-            adb shell screencap -p /sdcard/ember.png
-            adb pull /sdcard/ember.png app/build/ember-device.png
+            python3 scripts/capture-emulator.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -75,4 +72,4 @@ jobs:
           path: |
             app/build/reports/androidTests/
             app/build/outputs/androidTest-results/
-            app/build/ember-device.png
+            app/build/screenshots/

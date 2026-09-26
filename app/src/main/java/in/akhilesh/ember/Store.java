@@ -48,7 +48,7 @@ final class Store {
             for (int j = 0; j < values.length; j++) { if (j > 0) s.append(',');
                 // Prevent spreadsheet formula execution in user-entered notes.
                 String value = values[j];
-                if (value.matches("^[=+@\\-\\t\\r].*")) value = "'" + value;
+                value = Metrics.safeCell(value);
                 s.append(Metrics.csv(value));
             }
             s.append('\n');

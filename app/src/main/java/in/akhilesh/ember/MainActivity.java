@@ -177,7 +177,7 @@ public class MainActivity extends Activity {
         TextView guidance=text("Apply your saved settings inside the game. Starting a session only opens the game and records the start time and device readings.",14,MUTED,false); content.addView(guidance);
         content.addView(text("\n"+profile()+" · "+profileDescription(profile()),15,INK,true));
         for(String warning:Metrics.warnings(d.battery,d.temperature,d.saver,d.connected,d.charging)) content.addView(text("\n• "+warning,13,AMBER,false));
-        content.addView(button("Review Do Not Disturb",false,()->settings(Settings.ACTION_ZEN_MODE_SETTINGS)));
+        content.addView(button("Review Do Not Disturb",false,()->settings("android.settings.ZEN_MODE_SETTINGS")));
         new AlertDialog.Builder(this).setTitle("Ready for "+GAMES[game]+"?").setView(content)
             .setPositiveButton("Launch game",(x,w)->launch(true)).setNegativeButton("Not yet",null).show();
     }
@@ -305,7 +305,7 @@ public class MainActivity extends Activity {
     private void more() {
         header("MADE FOR YOUR ROUTINE", "Less noise. More play.", "No ads. No subscription. No account to create.");
         LinearLayout c=card();c.addView(text("System shortcuts",20,INK,true));c.addView(text("You stay in control. Ember opens Android settings; it doesn't silently change them.",13,MUTED,false));
-        c.addView(button("Do Not Disturb  ↗",false,()->settings(Settings.ACTION_ZEN_MODE_SETTINGS)));
+        c.addView(button("Do Not Disturb  ↗",false,()->settings("android.settings.ZEN_MODE_SETTINGS")));
         c.addView(button("Wi-Fi settings  ↗",false,()->settings(Settings.ACTION_WIFI_SETTINGS)));
         c.addView(button("Display & brightness  ↗",false,()->settings(Settings.ACTION_DISPLAY_SETTINGS)));
         c.addView(button("Battery Saver  ↗",false,()->settings(Settings.ACTION_BATTERY_SAVER_SETTINGS)));add(c,0,18);
@@ -315,7 +315,13 @@ public class MainActivity extends Activity {
         add(button("Erase all local data",false,()->new AlertDialog.Builder(this).setTitle("Erase Ember data?").setMessage("This permanently removes all profiles, notes, sessions and the active timer from this phone. Exported CSV files are not deleted.").setNegativeButton("Keep data",null).setPositiveButton("Erase data",(d,w)->{store.prefs.edit().clear().commit();game=0;samples.clear();testedAt=0;endpoint="1.1.1.1";navigate(0);welcome();}).show()),0,16);
         add(text("EMBER  /  1.0.0\nDesigned for a more intentional game session.",11,MUTED,false),0,0);
     }
-    private void settings(String action){open(new Intent(action));}
+    private void settings(String action){
+        try { startActivity(new Intent(action)); }
+        catch(ActivityNotFoundException|SecurityException e) {
+            if(action.equals("android.settings.ZEN_MODE_SETTINGS")) open(new Intent(Settings.ACTION_SOUND_SETTINGS));
+            else toast("This settings screen isn't available on your phone.");
+        }
+    }
     private void open(Intent i){try{startActivity(i);}catch(ActivityNotFoundException|SecurityException e){toast("This screen isn't available on your phone.");}}
     private void toast(String value){Toast.makeText(this,value,Toast.LENGTH_LONG).show();}
     private String elapsed(long start){return duration(Metrics.duration(start,System.currentTimeMillis()));}

@@ -19,5 +19,6 @@ public class MetricsTest {
     @Test public void flagsActualRisks() {assertEquals(5,Metrics.warnings(10,42f,true,false,true).size());}
     @Test public void missingTemperatureIsNotHot() {assertTrue(Metrics.warnings(-1,null,false,true,false).isEmpty());}
     @Test public void durationNeverNegative() {assertEquals(0,Metrics.duration(200,100));assertEquals(500,Metrics.duration(100,600));}
+    @Test public void multilineFormulaIsEscaped() {assertTrue(Metrics.safeCell(" =SUM(1,2)\nnext").startsWith("'"));}
     @Test public void csvEscapesQuotesAndPreservesCommas(){assertEquals("\"a,\"\"b\"\"\"",Metrics.csv("a,\"b\""));}
 }

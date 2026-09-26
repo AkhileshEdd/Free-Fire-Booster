@@ -39,5 +39,11 @@ public final class Metrics {
         return out;
     }
     public static long duration(long start, long end) { return Math.max(0L, end - start); }
+    public static String safeCell(String value) {
+        String trimmed = value.trim();
+        if (!trimmed.isEmpty() && "=+-@".indexOf(trimmed.charAt(0)) >= 0) return "'" + value;
+        if (!value.isEmpty() && "\t\r\n".indexOf(value.charAt(0)) >= 0) return "'" + value;
+        return value;
+    }
     public static String csv(String value) { return "\"" + value.replace("\"", "\"\"") + "\""; }
 }

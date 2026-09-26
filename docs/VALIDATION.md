@@ -10,7 +10,7 @@ Initial implementation: September 26, 2026.
 
 ## Local environment
 
-This workspace has a Java runtime but no `javac`, Android SDK or Gradle installation. The local core check could not execute (`javac: command not found`). This is an environment limitation, not a passed test. Full build and device-test status must be read from the GitHub Actions run; workflow files alone are not evidence of successful validation.
+The initial local command failed because the `javac` launcher is absent. The JDK compiler module is available, so the check script now invokes it directly. All core checks passed. Resource/manifest XML and workflow YAML parsing also passed. This workspace has no Android SDK or Gradle installation. Full Android build and emulator checks run in GitHub Actions; workflow configuration alone is not evidence of successful validation.
 
 ## Manual release gates
 

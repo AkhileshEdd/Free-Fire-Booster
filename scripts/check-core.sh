@@ -19,5 +19,5 @@ public class CoreCheck {
   }
 }
 JAVA
-javac -d "$task_tmp" app/src/main/java/in/akhilesh/ember/Metrics.java "$task_tmp/CoreCheck.java"
+java -m jdk.compiler/com.sun.tools.javac.Main -d "$task_tmp" app/src/main/java/in/akhilesh/ember/Metrics.java "$task_tmp/CoreCheck.java"
 java -cp "$task_tmp" CoreCheck

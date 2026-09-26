@@ -14,6 +14,7 @@ public class CoreCheck {
     check(Metrics.warnings(10,42f,true,false,true).size()==5);
     check(Metrics.warnings(-1,null,false,true,false).isEmpty());
     check(Metrics.duration(200,100)==0);
+    check(Metrics.safeCell(" =SUM(1,2)\nnext").startsWith("'"));
     check(Metrics.csv("a,\"b\"").equals("\"a,\"\"b\"\"\""));
     System.out.println("Core checks passed: failures, median, variation, warnings, missing data, duration and CSV.");
   }
